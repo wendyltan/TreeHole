@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <script type="text/javascript">
+
+        function s_test() {
+            if(confirm("Are you sure to delete this talk?")){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+    </script>
+    <h2>Your recent Talks:</h2>
+    {% if cur_status %}
+        <p><b>No talks here!</b></p>
+    {% endif %}
+    {% for talk in talks %}
+
+    <div>
+
+            {{ talk.author.username }} says: <b>{{ talk.body }}</b> at {{ talk.timestamp }}
+
+            <form id="form_hidden" method="post" onsubmit="return s_test()">
+                <input name="submit" type="submit" value="delete"/>
+                <input name="hidden" type="hidden" value="{{ talk.id }}">
+            </form>
+
+    </div>
+    {% endfor %}
+    <br>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+    <p>
+        {{ form.talk.label }}<br>
+        {{ form.talk(size=140) }}<br>
+        {% for error in form.talk.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    {{ form.submit() }}
+    </form>
+
+
+{% endblock %}
